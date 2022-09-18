@@ -1,0 +1,81 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:game_of_thrones_api/layout/cubit/cubit.dart';
+import 'package:game_of_thrones_api/layout/cubit/states.dart';
+
+class CharactersScreen extends StatelessWidget {
+  static const String id = 'characterPage';
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<BbCubit, BbStates>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          // var list = BbCubit.get(context).characters;
+          return Scaffold(
+            appBar: AppBar(
+                title: const Text(" Characters  "),
+                backgroundColor: Colors.lime,
+                centerTitle: true),
+            backgroundColor: const Color.fromRGBO(69, 30, 62, 1),
+            body: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 25, bottom: 25, left: 10, right: 10),
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 9 / 16,
+                      mainAxisSpacing: 15,
+                      crossAxisSpacing: 30),
+                  itemBuilder: (context, index) =>
+                      characterBuild(context, index),
+                  // itemCount: list.length,
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: BbCubit.get(context).character.length,
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  Widget characterBuild(context, index) {
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadiusDirectional.only(
+          topStart: Radius.circular(20),
+          topEnd: Radius.circular(20),
+        ),
+      ),
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      margin: const EdgeInsetsDirectional.only(start: 10, end: 10),
+      child: Stack(children: [
+        FadeInImage.assetNetwork(
+          placeholder: "assets/images/loading.gif",
+          image: "${BbCubit.get(context).character[index]['img']}",
+          fit: BoxFit.fill,
+          width: double.infinity,
+          height: double.infinity,
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            color: Colors.black.withOpacity(.5),
+            height: 40,
+            width: double.infinity,
+            child: Center(
+              child: Text(
+                "${BbCubit.get(context).character[index]['name']}",
+                style: const TextStyle(color: Colors.white, fontSize: 25),
+              ),
+            ),
+          ),
+        ),
+      ]),
+    );
+  }
+}
