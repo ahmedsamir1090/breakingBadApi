@@ -1,21 +1,24 @@
+import 'package:BrakingBad/layout/cubit/states.dart';
+import 'package:BrakingBad/models/movie.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_of_thrones_api/layout/cubit/states.dart';
-import 'package:game_of_thrones_api/models/movie.dart';
-import 'package:game_of_thrones_api/modules/character.dart';
-import 'package:game_of_thrones_api/modules/quotes.dart';
-import 'package:game_of_thrones_api/modules/seasons.dart';
-import 'package:game_of_thrones_api/modules/seasons/season1.dart';
-import 'package:game_of_thrones_api/modules/seasons/season2.dart';
-import 'package:game_of_thrones_api/modules/seasons/season3.dart';
-import 'package:game_of_thrones_api/modules/seasons/season4.dart';
-import 'package:game_of_thrones_api/modules/seasons/season5.dart';
-import 'package:game_of_thrones_api/network/endpoints.dart';
-import 'package:game_of_thrones_api/network/remote/dio_helper.dart';
+
+import '../../modules/character.dart';
+import '../../modules/quotes.dart';
+import '../../modules/seasons.dart';
+import '../../modules/seasons/season1.dart';
+import '../../modules/seasons/season2.dart';
+import '../../modules/seasons/season3.dart';
+import '../../modules/seasons/season4.dart';
+import '../../modules/seasons/season5.dart';
+import '../../network/endpoints.dart';
+import '../../network/remote/dio_helper.dart';
 
 class BbCubit extends Cubit<BbStates> {
   BbCubit() : super(BbInitiState());
   static BbCubit get(context) => BlocProvider.of(context);
   List<dynamic> character = [];
+  List<dynamic> characterSearched = [];
+
   List<MainScreen> movies = [
     MainScreen(
       title: "Characters",
@@ -73,6 +76,23 @@ class BbCubit extends Cubit<BbStates> {
     });
   }
 
+  void getCharactersSearchedData(String name) {
+    characterSearched = [];
+    emit(BbCharSearchLoadingState());
+    DioHelper.getData(url: Characters).then((value) {
+      character = value.data;
+      characterSearched = character
+          .where((element) =>
+              (element['name']).toLowerCase().startsWith(name) ||
+              (element['name']).toLowerCase().contains(name))
+          .toList();
+      emit(BbCharSearchSuccessState());
+    }).catchError((onError) {
+      print(onError);
+      emit(BbCharSearchErrorState());
+    });
+  }
+
   List<dynamic> episode = [];
   List<dynamic> breakingBad = [];
   List<dynamic> betterCallSaul = [];
@@ -120,7 +140,6 @@ class BbCubit extends Cubit<BbStates> {
       breakingBad = episode
           .where((element) => element["series"] == "Breaking Bad")
           .toList();
-      print(season1);
 
       emit(BbEpisodesSuccessState());
     }).catchError((onError) {
@@ -131,6 +150,16 @@ class BbCubit extends Cubit<BbStates> {
 
   List<dynamic> quote = [];
   List<dynamic> breakingBadQuotes = [];
+  List<dynamic> charQuotes = [];
+
+  List<dynamic> walterWhiteQuotes = [];
+  List<dynamic> skylerWhiteQuotes = [];
+  List<dynamic> jessePinkManQuotes = [];
+  List<dynamic> saulGoodmanQuotes = [];
+  List<dynamic> mikeEhrmantrautQuotes = [];
+  List<dynamic> hectorSalamancaQuotes = [];
+  List<dynamic> gusFringQuotes = [];
+  List<dynamic> hankSchraderQuotes = [];
 
   void getQuotesData() {
     emit(BbQuotesLoadingState());
@@ -139,10 +168,78 @@ class BbCubit extends Cubit<BbStates> {
       breakingBadQuotes = quote
           .where((element) => element["series"] == "Breaking Bad")
           .toList();
+      walterWhiteQuotes = quote
+          .where((element) =>
+              element["series"] == "Breaking Bad" &&
+              element["author"] == 'Walter White')
+          .toList();
+      skylerWhiteQuotes = quote
+          .where((element) =>
+              element["series"] == "Breaking Bad" &&
+              element["author"] == 'Skyler White')
+          .toList();
+      jessePinkManQuotes = quote
+          .where((element) =>
+              element["series"] == "Breaking Bad" &&
+              element["author"] == 'Jesse Pinkman')
+          .toList();
+      saulGoodmanQuotes = quote
+          .where((element) =>
+              element["series"] == "Breaking Bad" &&
+              element["author"] == 'Saul Goodman')
+          .toList();
+      mikeEhrmantrautQuotes = quote
+          .where((element) =>
+              element["series"] == "Breaking Bad" &&
+              element["author"] == 'Mike Ehrmantraut')
+          .toList();
+      hectorSalamancaQuotes = quote
+          .where((element) =>
+              element["series"] == "Breaking Bad" &&
+              element["author"] == 'Hector Salamanca')
+          .toList();
+      gusFringQuotes = quote
+          .where((element) =>
+              element["series"] == "Breaking Bad" &&
+              element["author"] == 'Gus Fring')
+          .toList();
+      hankSchraderQuotes = quote
+          .where((element) =>
+              element["series"] == "Breaking Bad" &&
+              element["author"] == 'Hank Schrader')
+          .toList();
+
+      print(breakingBadQuotes.length);
+
+      print(walterWhiteQuotes.length);
+      print(skylerWhiteQuotes.length);
+      print(jessePinkManQuotes.length);
+      print(saulGoodmanQuotes.length);
+      print(mikeEhrmantrautQuotes.length);
+      print(hectorSalamancaQuotes.length);
+      print(gusFringQuotes.length);
+      print(hankSchraderQuotes.length);
+
       emit(BbQuotesSuccessState());
     }).catchError((onError) {
       print(onError);
       emit(BbQuotesErrorState());
+    });
+  }
+
+  void getcharQuote(String name) {
+    emit(BbCharQuotesLoadingState());
+
+    DioHelper.getData(url: QUOTES).then((value) {
+      quote = value.data;
+      charQuotes = quote
+          .where((element) =>
+              element["series"] == "Breaking Bad" && element["author"] == name)
+          .toList();
+      emit(BbCharQuotesSuccessState());
+    }).catchError((onError) {
+      print(onError);
+      emit(BbCharQuotesErrorState());
     });
   }
 }

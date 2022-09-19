@@ -1,9 +1,10 @@
+import 'package:BrakingBad/layout/cubit/cubit.dart';
+import 'package:BrakingBad/layout/cubit/states.dart';
+import 'package:BrakingBad/models/movie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_of_thrones_api/layout/cubit/cubit.dart';
-import 'package:game_of_thrones_api/layout/cubit/states.dart';
-import 'package:game_of_thrones_api/models/movie.dart';
+import 'package:sizer/sizer.dart';
 
 class SeasonsScreen extends StatelessWidget {
   static const String id = 'episodesPage';
@@ -18,7 +19,11 @@ class SeasonsScreen extends StatelessWidget {
           // var list = BbCubit.get(context).characters;
           return Scaffold(
             appBar: AppBar(
-                title: const Text(" Episodes  "),
+                title: Text("Seasons",
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        color: Colors.black,
+                        fontFamily: 'Lora')),
                 backgroundColor: Colors.lime,
                 centerTitle: true),
             backgroundColor: const Color.fromRGBO(69, 30, 62, 1),
@@ -26,21 +31,23 @@ class SeasonsScreen extends StatelessWidget {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 9 / 16,
-                            mainAxisSpacing: 15,
-                            crossAxisSpacing: 30),
-                    itemBuilder: (context, index) {
-                      return mainScreenBuild(
-                          BbCubit.get(context).seasons[index], context);
-                    },
-                    // itemCount: list.length,
-                    shrinkWrap: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: BbCubit.get(context).seasons.length,
+                  Padding(
+                    padding: EdgeInsets.all(2.h),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 9.w / 8.8.h,
+                          mainAxisSpacing: 2.h,
+                          crossAxisSpacing: 4.w),
+                      itemBuilder: (context, index) {
+                        return mainScreenBuild(
+                            BbCubit.get(context).seasons[index], context);
+                      },
+                      // itemCount: list.length,
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: BbCubit.get(context).seasons.length,
+                    ),
                   ),
                 ],
               ),
@@ -51,10 +58,10 @@ class SeasonsScreen extends StatelessWidget {
 
   Widget mainScreenBuild(MainScreen mainScreen, context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadiusDirectional.only(
-          topStart: Radius.circular(20),
-          topEnd: Radius.circular(20),
+          topStart: Radius.circular(3.h),
+          topEnd: Radius.circular(3.h),
         ),
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -73,12 +80,15 @@ class SeasonsScreen extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Container(
               color: Colors.black.withOpacity(.8),
-              height: 40,
+              height: 4.h,
               width: double.infinity,
               child: Center(
                 child: Text(
                   mainScreen.title,
-                  style: const TextStyle(color: Colors.white, fontSize: 30),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17.sp,
+                      fontFamily: "RobotoMono"),
                 ),
               ),
             ),

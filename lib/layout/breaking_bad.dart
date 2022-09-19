@@ -1,9 +1,11 @@
+import 'package:BrakingBad/layout/cubit/cubit.dart';
+import 'package:BrakingBad/layout/cubit/states.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:game_of_thrones_api/layout/cubit/cubit.dart';
-import 'package:game_of_thrones_api/layout/cubit/states.dart';
-import 'package:game_of_thrones_api/models/movie.dart';
+import 'package:sizer/sizer.dart';
+
+import '../models/movie.dart';
 
 class BbScreen extends StatelessWidget {
   static const String id = 'mainPage';
@@ -18,30 +20,31 @@ class BbScreen extends StatelessWidget {
           // var list = BbCubit.get(context).characters;
           return Scaffold(
             appBar: AppBar(
-                title: const Text("Breaking Bad"),
-                actions: [
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.search))
-                ],
+                title: Text("Breaking Bad",
+                    style: TextStyle(
+                        fontSize: 15.sp,
+                        color: Colors.black,
+                        fontFamily: 'Lora')),
                 backgroundColor: Colors.lime,
                 centerTitle: true),
             backgroundColor: const Color.fromRGBO(69, 30, 62, 1),
             body: SingleChildScrollView(
               scrollDirection: Axis.vertical,
+              physics: const NeverScrollableScrollPhysics(),
               child: Column(
                 children: [
                   GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 9 / 16,
-                            mainAxisSpacing: 15,
-                            crossAxisSpacing: 30),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 9.w / 8.8.h,
+                        mainAxisSpacing: 2.h,
+                        crossAxisSpacing: 4.w),
                     itemBuilder: (context, index) => mainScreenBuild(
                         BbCubit.get(context).movies[index], context),
                     itemCount: BbCubit.get(context).movies.length,
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsetsDirectional.all(20),
+                    padding: EdgeInsetsDirectional.all(2.5.h),
                   ),
                 ],
               ),
@@ -51,18 +54,18 @@ class BbScreen extends StatelessWidget {
   }
 
   Widget mainScreenBuild(MainScreen mainScreen, context) {
-    return Container(
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadiusDirectional.only(
-          topStart: Radius.circular(20),
-          topEnd: Radius.circular(20),
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, mainScreen.route);
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadiusDirectional.only(
+            topStart: Radius.circular(3.h),
+            topEnd: Radius.circular(3.h),
+          ),
         ),
-      ),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, mainScreen.route);
-        },
+        clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Stack(children: [
           Image.asset(
             mainScreen.poster,
@@ -74,12 +77,15 @@ class BbScreen extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             child: Container(
               color: Colors.black.withOpacity(.7),
-              height: 40,
+              height: 4.h,
               width: double.infinity,
               child: Center(
                 child: Text(
                   mainScreen.title,
-                  style: const TextStyle(color: Colors.white, fontSize: 30),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17.sp,
+                      fontFamily: "RobotoMono"),
                 ),
               ),
             ),
