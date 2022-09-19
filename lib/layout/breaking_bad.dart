@@ -1,8 +1,9 @@
 import 'package:BrakingBad/layout/cubit/cubit.dart';
 import 'package:BrakingBad/layout/cubit/states.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 
 import '../models/movie.dart';
@@ -67,11 +68,17 @@ class BbScreen extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Stack(children: [
-          Image.asset(
-            mainScreen.poster,
+          CachedNetworkImage(
+            imageUrl: mainScreen.poster,
             height: double.infinity,
             width: double.infinity,
             fit: BoxFit.fill,
+            placeholder: (context, url) => const Center(
+                child: SpinKitWave(
+              color: Colors.lime,
+              itemCount: 5,
+              size: 90,
+            )),
           ),
           Align(
             alignment: Alignment.bottomCenter,

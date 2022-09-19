@@ -1,5 +1,6 @@
 import 'package:BrakingBad/layout/cubit/states.dart';
 import 'package:BrakingBad/models/movie.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../modules/character.dart';
@@ -22,17 +23,20 @@ class BbCubit extends Cubit<BbStates> {
   List<MainScreen> movies = [
     MainScreen(
       title: "Characters",
-      poster: "assets/images/characters.jpg",
+      poster:
+          "https://www.themoviedb.org/t/p/original/3cWI8ZxgfPTGarwCUVEQCSoO8Vd.jpg",
       route: CharactersScreen.id,
     ),
     MainScreen(
       title: "Seasons",
-      poster: "assets/images/episodes.jpg",
+      poster:
+          "https://i.pinimg.com/564x/ff/08/b8/ff08b8d87206e19a8ceced1b582467d2.jpg",
       route: SeasonsScreen.id,
     ),
     MainScreen(
       title: "Quotes",
-      poster: "assets/images/quotes.jpg",
+      poster:
+          "https://64.media.tumblr.com/bf72bdb09be2939c4675b601bb145cb0/tumblr_pq2tepm93W1qzpxx1o1_1280.jpg",
       route: QuotesScreen.id,
     ),
   ];
@@ -40,27 +44,32 @@ class BbCubit extends Cubit<BbStates> {
   List<MainScreen> seasons = [
     MainScreen(
       title: "season 1",
-      poster: "assets/images/season1.jpg",
+      poster:
+          "https://i.pinimg.com/564x/55/df/3d/55df3de5f5ed6092b4f073bfbdb76214.jpg",
       route: Season1Screen.id,
     ),
     MainScreen(
       title: "season 2",
-      poster: "assets/images/season2.jpg",
+      poster:
+          "https://i.pinimg.com/564x/66/e0/0d/66e00d4a33e2c0a20c5624a08919fba0.jpg",
       route: Season2Screen.id,
     ),
     MainScreen(
       title: "season 3",
-      poster: "assets/images/season3.jpg",
+      poster:
+          "https://i.pinimg.com/564x/cd/63/9b/cd639b19e5355168e42fb74b41270fce.jpg",
       route: Season3Screen.id,
     ),
     MainScreen(
       title: "season 4",
-      poster: "assets/images/season4.jpg",
+      poster:
+          "https://i.pinimg.com/564x/c3/75/c1/c375c11115fb981298f925352d798c93.jpg",
       route: Season4Screen.id,
     ),
     MainScreen(
       title: "season 5",
-      poster: "assets/images/season5.jpg",
+      poster:
+          "https://i.pinimg.com/564x/de/19/ae/de19ae028f0a45a4987d80c76dec9151.jpg",
       route: Seasons5Screen.id,
     ),
   ];
@@ -71,7 +80,9 @@ class BbCubit extends Cubit<BbStates> {
 
       emit(BbCharSuccessState());
     }).catchError((onError) {
-      print(onError);
+      if (kDebugMode) {
+        print(onError);
+      }
       emit(BbCharErrorState());
     });
   }
@@ -82,13 +93,13 @@ class BbCubit extends Cubit<BbStates> {
     DioHelper.getData(url: Characters).then((value) {
       character = value.data;
       characterSearched = character
-          .where((element) =>
-              (element['name']).toLowerCase().startsWith(name) ||
-              (element['name']).toLowerCase().contains(name))
+          .where((element) => (element['name']).toLowerCase().startsWith(name))
           .toList();
       emit(BbCharSearchSuccessState());
     }).catchError((onError) {
-      print(onError);
+      if (kDebugMode) {
+        print(onError);
+      }
       emit(BbCharSearchErrorState());
     });
   }
@@ -143,7 +154,9 @@ class BbCubit extends Cubit<BbStates> {
 
       emit(BbEpisodesSuccessState());
     }).catchError((onError) {
-      print(onError);
+      if (kDebugMode) {
+        print(onError);
+      }
       emit(BbEpisodesErrorState());
     });
   }
@@ -209,20 +222,40 @@ class BbCubit extends Cubit<BbStates> {
               element["author"] == 'Hank Schrader')
           .toList();
 
-      print(breakingBadQuotes.length);
+      if (kDebugMode) {
+        print(breakingBadQuotes.length);
+      }
 
-      print(walterWhiteQuotes.length);
-      print(skylerWhiteQuotes.length);
-      print(jessePinkManQuotes.length);
-      print(saulGoodmanQuotes.length);
-      print(mikeEhrmantrautQuotes.length);
-      print(hectorSalamancaQuotes.length);
-      print(gusFringQuotes.length);
-      print(hankSchraderQuotes.length);
+      if (kDebugMode) {
+        print(walterWhiteQuotes.length);
+      }
+      if (kDebugMode) {
+        print(skylerWhiteQuotes.length);
+      }
+      if (kDebugMode) {
+        print(jessePinkManQuotes.length);
+      }
+      if (kDebugMode) {
+        print(saulGoodmanQuotes.length);
+      }
+      if (kDebugMode) {
+        print(mikeEhrmantrautQuotes.length);
+      }
+      if (kDebugMode) {
+        print(hectorSalamancaQuotes.length);
+      }
+      if (kDebugMode) {
+        print(gusFringQuotes.length);
+      }
+      if (kDebugMode) {
+        print(hankSchraderQuotes.length);
+      }
 
       emit(BbQuotesSuccessState());
     }).catchError((onError) {
-      print(onError);
+      if (kDebugMode) {
+        print(onError);
+      }
       emit(BbQuotesErrorState());
     });
   }
@@ -238,7 +271,9 @@ class BbCubit extends Cubit<BbStates> {
           .toList();
       emit(BbCharQuotesSuccessState());
     }).catchError((onError) {
-      print(onError);
+      if (kDebugMode) {
+        print(onError);
+      }
       emit(BbCharQuotesErrorState());
     });
   }

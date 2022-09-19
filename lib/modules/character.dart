@@ -4,7 +4,6 @@ import 'package:BrakingBad/modules/character_details.dart';
 import 'package:BrakingBad/modules/search.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -12,6 +11,8 @@ import 'package:sizer/sizer.dart';
 
 class CharactersScreen extends StatelessWidget {
   static const String id = 'characterPage';
+
+  const CharactersScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class CharactersScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pushNamed(context, SearchScreen.id);
                         },
-                        icon: Icon(Icons.search))
+                        icon: const Icon(Icons.search))
                   ],
                   backgroundColor: Colors.lime,
                   centerTitle: true),
@@ -61,8 +62,8 @@ class CharactersScreen extends StatelessWidget {
                   ),
                 ),
                 condition: state is BbCharSuccessState,
-                fallback: (context) =>
-                    Center(child: SpinKitDoubleBounce(color: Colors.lime)),
+                fallback: (context) => const Center(
+                    child: SpinKitDoubleBounce(color: Colors.lime)),
                 // Image.asset(
                 //   "assets/images/98742-loading.gif",
                 //   fit: BoxFit.fill,

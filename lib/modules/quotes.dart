@@ -1,7 +1,6 @@
 import 'package:BrakingBad/layout/cubit/cubit.dart';
 import 'package:BrakingBad/layout/cubit/states.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -9,6 +8,8 @@ import 'package:sizer/sizer.dart';
 
 class QuotesScreen extends StatelessWidget {
   static const String id = 'quotesPage';
+
+  const QuotesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class QuotesScreen extends StatelessWidget {
                   ),
                 ),
                 condition: state is BbQuotesSuccessState,
-                fallback: (context) => SpinKitWave(
+                fallback: (context) => const SpinKitWave(
                   color: Colors.lime,
                 ),
                 // Image.asset(

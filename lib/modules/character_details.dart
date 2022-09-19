@@ -1,11 +1,16 @@
+import 'dart:math';
+
 import 'package:BrakingBad/layout/cubit/cubit.dart';
 import 'package:BrakingBad/layout/cubit/states.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
+// ignore: must_be_immutable
 class CharacterDetails extends StatelessWidget {
   String name;
   String image;
@@ -25,7 +30,9 @@ class CharacterDetails extends StatelessWidget {
       create: (context) => BbCubit()..getcharQuote(name),
       child: BlocConsumer<BbCubit, BbStates>(
         builder: (context, state) {
-          print(BbCubit.get(context).charQuotes.length);
+          if (kDebugMode) {
+            print(BbCubit.get(context).charQuotes.length);
+          }
           return Scaffold(
             backgroundColor: const Color.fromRGBO(69, 30, 62, 1),
             appBar: AppBar(
@@ -61,7 +68,7 @@ class CharacterDetails extends StatelessWidget {
                   height: 1.5.h,
                 ),
                 SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
@@ -154,10 +161,9 @@ class CharacterDetails extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 9.h,
+                  height: 4.h,
                 ),
                 SizedBox(
-                  height: 8.h,
                   child: Row(
                     children: [
                       Expanded(
@@ -167,20 +173,12 @@ class CharacterDetails extends StatelessWidget {
                               padding: EdgeInsets.all(2.h),
                               child: BbCubit.get(context).charQuotes.isEmpty ==
                                       false
-                                  ? ListView.separated(
-                                      itemBuilder: (context, index) =>
-                                          quotesBuild(context, index),
-                                      separatorBuilder: (context, index) =>
-                                          SizedBox(width: 2.h),
-                                      itemCount: 1,
-                                      scrollDirection: Axis.horizontal,
-                                      physics: const BouncingScrollPhysics(),
-                                      shrinkWrap: true,
-                                    )
+                                  ? quotesBuild(context)
                                   : Container(),
                             ),
                             condition: state is! BbCharQuotesLoadingState,
-                            fallback: (context) => CircularProgressIndicator(),
+                            fallback: (context) =>
+                                const CircularProgressIndicator(),
                           ),
                         ),
                       ),
@@ -196,27 +194,38 @@ class CharacterDetails extends StatelessWidget {
     );
   }
 
-  Widget quotesBuild(context, index) {
-    return Row(
+  Widget quotesBuild(context) {
+    int max = BbCubit.get(context).charQuotes.length;
+    Random objectname = Random();
+    int a = objectname.nextInt(max);
+    int b = objectname.nextInt(max);
+    int c = objectname.nextInt(max);
+
+    return Column(
       children: [
-        Text(
-          "${BbCubit.get(context).charQuotes[0]['quote']}",
-          style: TextStyle(color: Colors.amber, fontSize: 17.sp),
+        AnimatedTextKit(
+          animatedTexts: [
+            TypewriterAnimatedText(
+                "${BbCubit.get(context).charQuotes[a]['quote']}",
+                textStyle: TextStyle(color: Colors.amber, fontSize: 14.sp),
+                speed: const Duration(milliseconds: 50)),
+            TypewriterAnimatedText(
+                "${BbCubit.get(context).charQuotes[b]['quote']}",
+                textStyle: TextStyle(color: Colors.amber, fontSize: 14.sp),
+                speed: const Duration(milliseconds: 50)),
+            TypewriterAnimatedText(
+                "${BbCubit.get(context).charQuotes[c]['quote']}",
+                textStyle: TextStyle(color: Colors.amber, fontSize: 14.sp),
+                speed: const Duration(milliseconds: 50)),
+          ],
+          displayFullTextOnTap: true,
         ),
-        SizedBox(
-          width: 2.h,
-        ),
-        Text(
-          "${BbCubit.get(context).charQuotes[1]['quote']}",
-          style: TextStyle(color: Colors.amber, fontSize: 17.sp),
-        ),
-        SizedBox(
-          width: 2.h,
-        ),
-        Text(
-          "${BbCubit.get(context).charQuotes[2]['quote']}",
-          style: TextStyle(color: Colors.amber, fontSize: 17.sp),
-        ),
+
+        // Text(
+        //   "${BbCubit.get(context).charQuotes[1]['quote']}",
+        //   style: TextStyle(color: Colors.amber, fontSize: 17.sp),
+        //   maxLines: null,
+        // ),
       ],
     );
   }

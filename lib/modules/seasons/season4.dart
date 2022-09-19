@@ -1,7 +1,6 @@
 import 'package:BrakingBad/layout/cubit/cubit.dart';
 import 'package:BrakingBad/layout/cubit/states.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -14,49 +13,53 @@ class Season4Screen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BbCubit, BbStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          // var list = BbCubit.get(context).characters;
-          return Scaffold(
-            appBar: AppBar(
-                title: Text("Season Four",
-                    style: TextStyle(
-                        fontSize: 15.sp,
-                        color: Colors.black,
-                        fontFamily: 'Lora')),
-                backgroundColor: Colors.lime,
-                centerTitle: true),
-            backgroundColor: const Color.fromRGBO(69, 30, 62, 1),
-            body: ConditionalBuilder(
-              builder: (context) => SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(1.h),
-                      child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 9.w / 8.8.h,
-                            mainAxisSpacing: 2.h,
-                            crossAxisSpacing: 4.w),
-                        itemBuilder: (context, index) =>
-                            season4Build(context, index),
-                        shrinkWrap: true,
-                        itemCount: BbCubit.get(context).season1.length,
-                        physics: const BouncingScrollPhysics(),
+    return BlocProvider(
+      create: (context) => BbCubit()..getEpisodesData(),
+      child: BlocConsumer<BbCubit, BbStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            // var list = BbCubit.get(context).characters;
+            return Scaffold(
+              appBar: AppBar(
+                  title: Text("Season Four",
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          color: Colors.black,
+                          fontFamily: 'Lora')),
+                  backgroundColor: Colors.lime,
+                  centerTitle: true),
+              backgroundColor: const Color.fromRGBO(69, 30, 62, 1),
+              body: ConditionalBuilder(
+                builder: (context) => SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(1.h),
+                        child: GridView.builder(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 9.w / 8.8.h,
+                                  mainAxisSpacing: 2.h,
+                                  crossAxisSpacing: 4.w),
+                          itemBuilder: (context, index) =>
+                              season4Build(context, index),
+                          shrinkWrap: true,
+                          itemCount: BbCubit.get(context).season1.length,
+                          physics: const BouncingScrollPhysics(),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
+                condition: state is BbEpisodesSuccessState,
+                fallback: (context) => const Center(
+                    child: SpinKitPouringHourGlass(color: Colors.lime)),
               ),
-              condition: state is BbEpisodesSuccessState,
-              fallback: (context) =>
-                  Center(child: SpinKitPouringHourGlass(color: Colors.lime)),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 
   Widget season4Build(context, index) {
@@ -144,7 +147,7 @@ class Season4Screen extends StatelessWidget {
                               flex: 2,
                               child: ListView(
                                 shrinkWrap: true,
-                                physics: BouncingScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 children: [
                                   Padding(
                                     padding: EdgeInsetsDirectional.only(

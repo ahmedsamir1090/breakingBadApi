@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BbCubit()..getEpisodesData(),
+      create: (context) => BbCubit(),
       child: BlocConsumer<BbCubit, BbStates>(
         builder: (context, state) => Sizer(
           builder: (context, orientation, deviceType) => MaterialApp(
@@ -55,15 +55,15 @@ class MyApp extends StatelessWidget {
             home: const BbScreen(),
             routes: {
               BbScreen.id: (context) => const BbScreen(),
-              CharactersScreen.id: (context) => CharactersScreen(),
+              CharactersScreen.id: (context) => const CharactersScreen(),
               SeasonsScreen.id: (context) => const SeasonsScreen(),
-              QuotesScreen.id: (context) => QuotesScreen(),
+              QuotesScreen.id: (context) => const QuotesScreen(),
               Season1Screen.id: (context) => const Season1Screen(),
               Season2Screen.id: (context) => const Season2Screen(),
               Season3Screen.id: (context) => const Season3Screen(),
               Season4Screen.id: (context) => const Season4Screen(),
               Seasons5Screen.id: (context) => const Seasons5Screen(),
-              SearchScreen.id: (context) => SearchScreen(),
+              SearchScreen.id: (context) => const SearchScreen(),
             },
           ),
         ),
