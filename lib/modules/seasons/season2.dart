@@ -1,8 +1,10 @@
 import 'package:BrakingBad/layout/cubit/cubit.dart';
 import 'package:BrakingBad/layout/cubit/states.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 
 class Season2Screen extends StatelessWidget {
@@ -26,27 +28,31 @@ class Season2Screen extends StatelessWidget {
                 backgroundColor: Colors.lime,
                 centerTitle: true),
             backgroundColor: const Color.fromRGBO(69, 30, 62, 1),
-            body: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(1.h),
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 9.w / 8.8.h,
-                          mainAxisSpacing: 2.h,
-                          crossAxisSpacing: 4.w),
-                      itemBuilder: (context, index) =>
-                          season2Build(context, index),
-                      shrinkWrap: true,
-                      itemCount: BbCubit.get(context).season2.length,
-                      physics: const BouncingScrollPhysics(),
+            body: ConditionalBuilder(
+              builder: (context) => SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(1.h),
+                      child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 9.w / 8.8.h,
+                            mainAxisSpacing: 2.h,
+                            crossAxisSpacing: 4.w),
+                        itemBuilder: (context, index) =>
+                            season2Build(context, index),
+                        shrinkWrap: true,
+                        itemCount: BbCubit.get(context).season1.length,
+                        physics: const BouncingScrollPhysics(),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              condition: state is BbEpisodesSuccessState,
+              fallback: (context) => SpinKitSpinningCircle(color: Colors.lime),
             ),
           );
         });

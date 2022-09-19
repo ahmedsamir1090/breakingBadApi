@@ -1,8 +1,10 @@
 import 'package:BrakingBad/layout/cubit/cubit.dart';
 import 'package:BrakingBad/layout/cubit/states.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 
 class QuotesScreen extends StatelessWidget {
@@ -10,40 +12,54 @@ class QuotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<BbCubit, BbStates>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          // var list = BbCubit.get(context).characters;
-          return Scaffold(
-            appBar: AppBar(
-                title: Text("Quotes",
-                    style: TextStyle(
-                        fontSize: 15.sp,
-                        color: Colors.black,
-                        fontFamily: 'Lora')),
-                backgroundColor: Colors.lime,
-                centerTitle: true),
-            backgroundColor: const Color.fromRGBO(69, 30, 62, 1),
-            body: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Padding(
-                padding: EdgeInsets.all(2.h),
-                child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 9.w / 8.8.h,
-                      mainAxisSpacing: 2.h,
-                      crossAxisSpacing: 4.w),
-                  itemBuilder: (context, index) => quotesBuild(context, index),
-                  // itemCount: list.length,
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: BbCubit.get(context).breakingBadQuotes.length,
+    return BlocProvider(
+      create: (context) => BbCubit()..getQuotesData(),
+      child: BlocConsumer<BbCubit, BbStates>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            // var list = BbCubit.get(context).characters;
+            return Scaffold(
+              appBar: AppBar(
+                  title: Text("Quotes",
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          color: Colors.black,
+                          fontFamily: 'Lora')),
+                  backgroundColor: Colors.lime,
+                  centerTitle: true),
+              backgroundColor: const Color.fromRGBO(69, 30, 62, 1),
+              body: ConditionalBuilder(
+                builder: (context) => SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Padding(
+                    padding: EdgeInsets.all(2.h),
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 9.w / 8.8.h,
+                          mainAxisSpacing: 2.h,
+                          crossAxisSpacing: 4.w),
+                      itemBuilder: (context, index) =>
+                          quotesBuild(context, index),
+                      // itemCount: list.length,
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: BbCubit.get(context).breakingBadQuotes.length,
+                    ),
+                  ),
                 ),
+                condition: state is BbQuotesSuccessState,
+                fallback: (context) => SpinKitWave(
+                  color: Colors.lime,
+                ),
+                // Image.asset(
+                //     'assets/images/98742-loading.gif',
+                //     height: double.infinity,
+                //     fit: BoxFit.fill),
               ),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 
   Widget quotesBuild(context, index) {

@@ -16,7 +16,6 @@ class SeasonsScreen extends StatelessWidget {
     return BlocConsumer<BbCubit, BbStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          // var list = BbCubit.get(context).characters;
           return Scaffold(
             appBar: AppBar(
                 title: Text("Seasons",
@@ -67,7 +66,10 @@ class SeasonsScreen extends StatelessWidget {
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, mainScreen.route);
+          Navigator.pushNamed(
+            context,
+            mainScreen.route,
+          );
         },
         child: Stack(children: [
           Image.asset(

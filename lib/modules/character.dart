@@ -7,6 +7,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
 
 class CharactersScreen extends StatelessWidget {
@@ -59,13 +60,15 @@ class CharactersScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                condition: state is! BbCharLoadingState,
-                fallback: (context) => Image.asset(
-                  "assets/images/98742-loading.gif",
-                  fit: BoxFit.fill,
-                  height: double.infinity,
-                  width: double.infinity,
-                ),
+                condition: state is BbCharSuccessState,
+                fallback: (context) =>
+                    Center(child: SpinKitDoubleBounce(color: Colors.lime)),
+                // Image.asset(
+                //   "assets/images/98742-loading.gif",
+                //   fit: BoxFit.fill,
+                //   height: double.infinity,
+                //   width: double.infinity,
+                // )
               ),
             );
           }),

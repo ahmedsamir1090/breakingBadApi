@@ -34,9 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BbCubit()
-        ..getEpisodesData()
-        ..getQuotesData(),
+      create: (context) => BbCubit()..getEpisodesData(),
       child: BlocConsumer<BbCubit, BbStates>(
         builder: (context, state) => Sizer(
           builder: (context, orientation, deviceType) => MaterialApp(
