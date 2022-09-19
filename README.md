@@ -1,4 +1,4 @@
-# game_of_thrones_api
+# Breaking Bad api
 
 A new Flutter project.
 
